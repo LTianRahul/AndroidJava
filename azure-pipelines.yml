@@ -34,7 +34,7 @@ stages:
 
     - script: |
         curl --http1.1 --location --request POST 'https://mobile-api.lambdatest.com/framework/v1/xcui/build' \
-        --header "Authorization: Basic $(echo -n $(LAMBDATEST_USERNAME):$(LAMBDATEST_ACCESS_KEY) | base64)" \
+        --header "Authorization: Basic cmFodWxrdW1hcmxhbWJkYXRlc3Q6ZGJvWks3c284a29NbklSMXROMTFhS2ZNZ3h5S3REcGI5MElseWFDajRuNm43dFFlSzY=" \
         --header 'Content-Type: application/json' \
         --data-raw '{
           "app" : "$(APP_ID)",
