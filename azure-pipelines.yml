@@ -39,13 +39,13 @@ stages:
         --data-raw '{
           "app" : "$(APP_ID)",
           "testSuite": "$(TEST_SUITE_ID)",
-          "device" :  ["iPhone 11-14"],
+          "device" :  ["iPhone 15-17"],
           "video" : true,
           "queueTimeout": 10800,
           "idleTimeout": 150,
           "devicelog": true,
           "network": false,
-          "build" : "Proverbial-XCUITest"
+          "build" : "Proverbial-XCUITest-Azure"
         }'
       displayName: 'Trigger XCUI Test on LambdaTest'
       continueOnError: false
