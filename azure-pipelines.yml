@@ -7,6 +7,8 @@ pool:
 variables:
   LAMBDATEST_USERNAME: 'rahulkumarlambdatest'
   LAMBDATEST_ACCESS_KEY: 'dboZK7so8koMnIR1tN11aKfMgxyKtDpb90IlyaCj4n6n7tQeK6'
+  APP_ID: "lt://APP10160571441724765428716240"
+  TEST_SUITE_ID: "lt://APP1016041711724765504452698"
 
 stages:
 - stage: UploadAndTriggerTest
@@ -19,15 +21,15 @@ stages:
         --header "Authorization: Basic YW1pcmFuZGFoZWFsdGhjYXJlYmx1ZWJvb2s6U1hTb0tBVENHelpWd1p0THJWaERuTjFXbzN1cnl3RjR3bjN2aUtxZjRZMjNPajhiWXE=" \
         --header 'Content-Type: application/json' \
         --data-raw '{
-          "app" : "lt://APP10160571441724765428716240",
-          "testSuite": "lt://APP10160571441724676729189480",
+          "app" : "$(APP_ID)",
+          "testSuite": "$(TEST_SUITE_ID)",
           "device" :  ["iPhone 11-14"],
           "video" : true,
           "queueTimeout": 10800,
           "idleTimeout": 150,
           "devicelog": true,
           "network": false,
-          "build" : "Proverbial-XCUITest"
+          "build" : "Proverbial-XCUITest-Azure"
         }'
       displayName: 'Trigger XCUI Test on LambdaTest'
       continueOnError: false
