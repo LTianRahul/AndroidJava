@@ -17,7 +17,7 @@ stages:
     steps:
 
     - script: |
-        APP_UPLOAD_RESPONSE=$(curl -u "$(LAMBDATEST_USERNAME):$(LAMBDATEST_ACCESS_KEY)" --location --request POST 'https://manual-api.lambdatest.com/app/uploadFramework' --form "appFile=@\"$(APP_PATH)\"" --form 'type="xcuit-ios"')
+        APP_UPLOAD_RESPONSE=$(curl --http1.1 -u "$(LAMBDATEST_USERNAME):$(LAMBDATEST_ACCESS_KEY)" --location --request POST 'https://manual-api.lambdatest.com/app/uploadFramework' --form "appFile=@\"$(APP_PATH)\"" --form 'type="xcuit-ios"')
         APP_ID=$(echo $APP_UPLOAD_RESPONSE | jq -r '.app_id')
         echo "##vso[task.setvariable variable=APP_ID]$APP_ID"
       name: Upload_iOS_App
@@ -25,7 +25,7 @@ stages:
       continueOnError: false
 
     - script: |
-        TEST_SUITE_UPLOAD_RESPONSE=$(curl -u "$(LAMBDATEST_USERNAME):$(LAMBDATEST_ACCESS_KEY)" --location --request POST 'https://manual-api.lambdatest.com/app/uploadFramework' --form "appFile=@\"$(TEST_SUITE_PATH)\"" --form 'type="xcuit-ios"')
+        TEST_SUITE_UPLOAD_RESPONSE=$(curl --http1.1 -u "$(LAMBDATEST_USERNAME):$(LAMBDATEST_ACCESS_KEY)" --location --request POST 'https://manual-api.lambdatest.com/app/uploadFramework' --form "appFile=@\"$(TEST_SUITE_PATH)\"" --form 'type="xcuit-ios"')
         TEST_SUITE_ID=$(echo $TEST_SUITE_UPLOAD_RESPONSE | jq -r '.app_id')
         echo "##vso[task.setvariable variable=TEST_SUITE_ID]$TEST_SUITE_ID"
       name: Upload_Test_Suite
@@ -33,7 +33,7 @@ stages:
       continueOnError: false
 
     - script: |
-        curl --location --request POST 'https://mobile-api.lambdatest.com/framework/v1/xcui/build' \
+        curl --http1.1 --location --request POST 'https://mobile-api.lambdatest.com/framework/v1/xcui/build' \
         --header "Authorization: Basic $(echo -n $(LAMBDATEST_USERNAME):$(LAMBDATEST_ACCESS_KEY) | base64)" \
         --header 'Content-Type: application/json' \
         --data-raw '{
