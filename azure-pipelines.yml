@@ -7,8 +7,8 @@ pool:
 variables:
   LAMBDATEST_USERNAME: 'rahulkumarlambdatest'
   LAMBDATEST_ACCESS_KEY: 'dboZK7so8koMnIR1tN11aKfMgxyKtDpb90IlyaCj4n6n7tQeK6'
-  APP_ID: "lt://APP10160571441724765428716240"
-  TEST_SUITE_ID: "lt://APP1016041711724765504452698"
+  APP_PATH: 'ArchivedBluebook3ipa-1723586264662.ipa'
+  TEST_SUITE_PATH: 'Payloadipa-1723586910754.ipa'
 
 stages:
 - stage: UploadAndTriggerTest
@@ -17,8 +17,24 @@ stages:
     steps:
 
     - script: |
+        APP_UPLOAD_RESPONSE=$(curl -u "$(LAMBDATEST_USERNAME):$(LAMBDATEST_ACCESS_KEY)" --location --request POST 'https://manual-api.lambdatest.com/app/uploadFramework' --form "appFile=@\"$(APP_PATH)\"" --form 'type="xcuit-ios"')
+        APP_ID=$(echo $APP_UPLOAD_RESPONSE | jq -r '.app_id')
+        echo "##vso[task.setvariable variable=APP_ID]$APP_ID"
+      name: Upload_iOS_App
+      displayName: 'Upload iOS App to LambdaTest'
+      continueOnError: false
+
+    - script: |
+        TEST_SUITE_UPLOAD_RESPONSE=$(curl -u "$(LAMBDATEST_USERNAME):$(LAMBDATEST_ACCESS_KEY)" --location --request POST 'https://manual-api.lambdatest.com/app/uploadFramework' --form "appFile=@\"$(TEST_SUITE_PATH)\"" --form 'type="xcuit-ios"')
+        TEST_SUITE_ID=$(echo $TEST_SUITE_UPLOAD_RESPONSE | jq -r '.app_id')
+        echo "##vso[task.setvariable variable=TEST_SUITE_ID]$TEST_SUITE_ID"
+      name: Upload_Test_Suite
+      displayName: 'Upload Test Suite to LambdaTest'
+      continueOnError: false
+
+    - script: |
         curl --location --request POST 'https://mobile-api.lambdatest.com/framework/v1/xcui/build' \
-        --header "Authorization: Basic YW1pcmFuZGFoZWFsdGhjYXJlYmx1ZWJvb2s6U1hTb0tBVENHelpWd1p0THJWaERuTjFXbzN1cnl3RjR3bjN2aUtxZjRZMjNPajhiWXE=" \
+        --header "Authorization: Basic $(echo -n $(LAMBDATEST_USERNAME):$(LAMBDATEST_ACCESS_KEY) | base64)" \
         --header 'Content-Type: application/json' \
         --data-raw '{
           "app" : "$(APP_ID)",
@@ -29,7 +45,7 @@ stages:
           "idleTimeout": 150,
           "devicelog": true,
           "network": false,
-          "build" : "Proverbial-XCUITest-Azure"
+          "build" : "Proverbial-XCUITest"
         }'
       displayName: 'Trigger XCUI Test on LambdaTest'
       continueOnError: false
