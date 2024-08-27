@@ -45,7 +45,7 @@ stages:
           "idleTimeout": 150,
           "devicelog": true,
           "network": false,
-          "build" : "Proverbial-XCUITest-Azure"
+          "build" : ""
         }'
       displayName: 'Trigger XCUI Test on LambdaTest'
       continueOnError: false
