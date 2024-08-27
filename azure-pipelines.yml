@@ -1,0 +1,49 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'macOS-latest'
+
+variables:
+  LAMBDATEST_USERNAME: 'rahulkumarlambdatest'
+  LAMBDATEST_ACCESS_KEY: 'dboZK7so8koMnIR1tN11aKfMgxyKtDpb90IlyaCj4n6n7tQeK6'
+  APP_PATH: 'lt://APP1016041711724676746807778'
+  TEST_SUITE_PATH: 'lt://APP10160571441724676729189480'
+  BASIC_AUTH_TOKEN: $(LAMBDATEST_USERNAME):$(LAMBDATEST_ACCESS_KEY)
+
+stages:
+- stage: UploadAndTriggerTest
+  jobs:
+  - job: UploadAndRunTests
+    steps:
+
+    - script: |
+        curl -u "$(LAMBDATEST_USERNAME):$(LAMBDATEST_ACCESS_KEY)" --location --request POST 'https://manual-api.lambdatest.com/app/uploadFramework' --form "appFile=@\"$(APP_PATH)\"" --form 'type="xcuit-ios"'
+      name: Upload iOS App
+      displayName: 'Upload iOS App to LambdaTest'
+      continueOnError: false
+
+    - script: |
+        curl -u "$(LAMBDATEST_USERNAME):$(LAMBDATEST_ACCESS_KEY)" --location --request POST 'https://manual-api.lambdatest.com/app/uploadFramework' --form "appFile=@\"$(TEST_SUITE_PATH)\"" --form 'type="xcuit-ios"'
+      name: Upload Test Suite
+      displayName: 'Upload Test Suite to LambdaTest'
+      continueOnError: false
+
+    - script: |
+        curl --location --request POST 'https://mobile-api.lambdatest.com/framework/v1/xcui/build' \
+        --header "Authorization: Basic $(echo -n $(BASIC_AUTH_TOKEN) | base64)" \
+        --header 'Content-Type: application/json' \
+        --data-raw '{
+          "app" : "lt://APP1016041711724676746807778",
+          "testSuite": "lt://APP10160571441724676729189480",
+          "device" :  ["iPhone 11-14"],
+          "video" : true,
+          "queueTimeout": 10800,
+          "idleTimeout": 150,
+          "devicelog": true,
+          "network": false,
+          "build" : "Proverbial-XCUITest"
+        }'
+      name: Trigger XCUI Test
+      displayName: 'Trigger XCUI Test on LambdaTest'
+      continueOnError: false
