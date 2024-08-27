@@ -19,7 +19,7 @@ stages:
         --header "Authorization: Basic YW1pcmFuZGFoZWFsdGhjYXJlYmx1ZWJvb2s6U1hTb0tBVENHelpWd1p0THJWaERuTjFXbzN1cnl3RjR3bjN2aUtxZjRZMjNPajhiWXE=" \
         --header 'Content-Type: application/json' \
         --data-raw '{
-          "app" : "lt://APP1016041711724676746807778",
+          "app" : "lt://APP10160571441724765428716240",
           "testSuite": "lt://APP10160571441724676729189480",
           "device" :  ["iPhone 11-14"],
           "video" : true,
