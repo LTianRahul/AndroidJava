@@ -18,20 +18,8 @@ stages:
     steps:
 
     - script: |
-        curl -u "$(LAMBDATEST_USERNAME):$(LAMBDATEST_ACCESS_KEY)" --location --request POST 'https://manual-api.lambdatest.com/app/uploadFramework' --form "appFile=@\"$(APP_PATH)\"" --form 'type="xcuit-ios"'
-      name: Upload iOS App
-      displayName: 'Upload iOS App to LambdaTest'
-      continueOnError: false
-
-    - script: |
-        curl -u "$(LAMBDATEST_USERNAME):$(LAMBDATEST_ACCESS_KEY)" --location --request POST 'https://manual-api.lambdatest.com/app/uploadFramework' --form "appFile=@\"$(TEST_SUITE_PATH)\"" --form 'type="xcuit-ios"'
-      name: Upload Test Suite
-      displayName: 'Upload Test Suite to LambdaTest'
-      continueOnError: false
-
-    - script: |
         curl --location --request POST 'https://mobile-api.lambdatest.com/framework/v1/xcui/build' \
-        --header "Authorization: Basic $(echo -n $(BASIC_AUTH_TOKEN) | base64)" \
+        --header "Authorization: Basic YW1pcmFuZGFoZWFsdGhjYXJlYmx1ZWJvb2s6U1hTb0tBVENHelpWd1p0THJWaERuTjFXbzN1cnl3RjR3bjN2aUtxZjRZMjNPajhiWXE=" \
         --header 'Content-Type: application/json' \
         --data-raw '{
           "app" : "lt://APP1016041711724676746807778",
@@ -44,6 +32,5 @@ stages:
           "network": false,
           "build" : "Proverbial-XCUITest"
         }'
-      name: Trigger XCUI Test
       displayName: 'Trigger XCUI Test on LambdaTest'
       continueOnError: false
