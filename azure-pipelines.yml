@@ -2,12 +2,11 @@ trigger:
 - main
 
 pool:
-  vmImage: 'macOS-latest'
+  vmImage: 'ubuntu-latest'
 
 variables:
   LAMBDATEST_USERNAME: 'rahulkumarlambdatest'
   LAMBDATEST_ACCESS_KEY: 'dboZK7so8koMnIR1tN11aKfMgxyKtDpb90IlyaCj4n6n7tQeK6'
-  BASIC_AUTH_TOKEN: $(LAMBDATEST_USERNAME):$(LAMBDATEST_ACCESS_KEY)
 
 stages:
 - stage: UploadAndTriggerTest
