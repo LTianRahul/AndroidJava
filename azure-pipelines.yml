@@ -20,6 +20,7 @@ stages:
         APP_UPLOAD_RESPONSE=$(curl --http1.1 -u "$(LAMBDATEST_USERNAME):$(LAMBDATEST_ACCESS_KEY)" --location --request POST 'https://manual-api.lambdatest.com/app/uploadFramework' --form "appFile=@\"$(APP_PATH)\"" --form 'type="xcuit-ios"')
         APP_ID=$(echo $APP_UPLOAD_RESPONSE | jq -r '.app_id')
         echo "##vso[task.setvariable variable=APP_ID]$APP_ID"
+        echo "Suite ID: $(APP_ID)"
       name: Upload_iOS_App
       displayName: 'Upload iOS App to LambdaTest'
       continueOnError: false
@@ -28,6 +29,7 @@ stages:
         TEST_SUITE_UPLOAD_RESPONSE=$(curl --http1.1 -u "$(LAMBDATEST_USERNAME):$(LAMBDATEST_ACCESS_KEY)" --location --request POST 'https://manual-api.lambdatest.com/app/uploadFramework' --form "appFile=@\"$(TEST_SUITE_PATH)\"" --form 'type="xcuit-ios"')
         TEST_SUITE_ID=$(echo $TEST_SUITE_UPLOAD_RESPONSE | jq -r '.app_id')
         echo "##vso[task.setvariable variable=TEST_SUITE_ID]$TEST_SUITE_ID"
+        echo "Test Suite ID: $(TEST_SUITE_ID)"
       name: Upload_Test_Suite
       displayName: 'Upload Test Suite to LambdaTest'
       continueOnError: false
